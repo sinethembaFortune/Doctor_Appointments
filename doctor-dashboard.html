@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+	 <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #495057;
+            margin-bottom: 40px;
+        }
+
+        .profile {
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button.view-details {
+            background-color: #17a2b8;
+            margin-right: 5px;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+            margin-right: 5px;
+        }
+
+        button.switch-to-client {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .welcome-message {
+            font-size: 18px;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+
+        .appointment-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+        }
+
+        .stat-item {
+            flex: 1;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* New style for the profile section */
+        .profile-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: left;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="switch-to-client" onclick="switchToClientView()">Switch to Client</button>
+
+    <div class="profile">
+        <h2>Doctor Profile</h2>
+        <div class="profile-info">
+              <img class="profile-img" id="profilePic" alt="Doctor's Profile Picture">
+            <div>
+                <strong><h1 id="name">Dr.</h1></strong>
+				<h4>Specialty: <span id="specialty"></span></h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="welcome-message">
+    <h3>Welcome, Dr. <span id="name1"></span> Here are your appointments:</h3>
+</div>
+<button onclick="displayAllAppointments()">Display All Appointments</button>
+<button onclick="displayAppointments()">Display Your Appointments Only</button>
+    <div class="appointment-stats">
+        <div class="stat-item" id="todaysAppointmentsStat">
+            <p>Today's Appointments</p>
+            <p id="todaysAppointments">0</p>
+        </div>
+        <div class="stat-item" id="upcomingAppointmentsStat">
+            <p>Upcoming Appointments</p>
+            <p id="upcomingAppointments">0</p>
+        </div>
+		<div class="stat-item" id="passedAppointmentsStat">
+            <p>Passed Appointments</p>
+            <p id="passedAppointments">0</p>
+        </div>
+        <div class="stat-item" id="totalAppointmentsStat">
+            <p>Total Appointments</p>
+            <p id="totalAppointments">0</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Department</th>
+                <th>Doctor</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="appointmentsList"></tbody>
+    </table>
+
+    <button onclick="logout()">Logout</button>
+
+    <script>
+	
+	 function switchToClientView() {
+            // Replace this with the logic to navigate to the client view or page
+            alert("Switching to Client View");
+			 window.location.href = "index.html";
+        }
+        function logout() {
+            // Replace this with actual logout logic, such as clearing session or redirecting to the logout page
+            alert("Logout successful!");
+            window.location.href = "doctor-login.html";
+        }
+		  function updateAppointmentStats() {
+			var username = localStorage.getItem("username");
+			var specialty ="";
+			var doctorProfilePicUrl = "";
+			
+			if(username ==="trishia")
+			{
+				username="Trishia Maluleka";
+				specialty ="Anesthesiologist=>Pediatrics,Cardiology,Hepatology, Eye Care and  Neurology";
+				doctorProfilePicUrl="assets/img/doctors/doctors-2.jpeg";
+				
+			} else if(username ==="kutlego")
+			{
+				username="Kutlego Tebele";
+				specialty ="Chief Medical Officer=> Pediatrics,Cardiology,Hepatology, Eye Care and  Neurology";
+				doctorProfilePicUrl="assets/img/doctors/doctors-1.jpeg";
+			}
+			 else if(username ==="phasha")
+			{
+				username="Phasha Kutloano";
+				specialty ="Cardiology=> Pediatrics,Cardiology,Hepatology, Eye Care and  Neurology";
+				doctorProfilePicUrl="assets/img/doctors/doctors-3.jpeg";
+			}
+			 else if(username ==="admire")
+			{
+				username="Admire Mkansi";
+				specialty ="Neurosurgeon=>Pediatrics,Cardiology,Hepatology, Eye Care and  Neurology";
+				doctorProfilePicUrl="assets/img/doctors/doctors-4.jpeg";
+			}
+			
+			 
+
+        // Update the profile picture source
+        if (doctorProfilePicUrl) {
+            document.getElementById("profilePic").src = doctorProfilePicUrl;
+        }
+		
+            var todaysAppointmentsElement = document.getElementById("todaysAppointments");
+            var upcomingAppointmentsElement = document.getElementById("upcomingAppointments");
+            var passedAppointmentsElement = document.getElementById("passedAppointments");
+            var totalAppointmentsElement = document.getElementById("totalAppointments");
+			document.getElementById("name").textContent = username;
+			document.getElementById("name1").textContent = username;
+			document.getElementById("specialty").textContent = specialty;
+			
+			
+			//color adding elements
+            var totalAppointmentsStatElement = document.getElementById("totalAppointmentsStat");
+			var todaysAppointmentsStatElement = document.getElementById("todaysAppointmentsStat");
+			var upcomingAppointmentsStatElement = document.getElementById("upcomingAppointmentsStat");
+			var passedAppointmentsStatElement = document.getElementById("passedAppointmentsStat");
+
+
+
+            // Retrieve existing appointments from local storage
+            var existingAppointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+            // Get the current date
+            var currentDate = new Date();
+
+            // Filter today's appointments
+            var todaysAppointments = existingAppointments.filter(function (appointment) {
+                var appointmentDate = new Date(appointment.date);
+                return appointmentDate.toDateString() === currentDate.toDateString();
+            });
+
+            // Filter passed appointments
+            var passedAppointments = existingAppointments.filter(function (appointment) {
+                var appointmentDate = new Date(appointment.date);
+                return appointmentDate < currentDate;
+            });
+
+            // Get the number of today's appointments
+            var numberOfTodaysAppointments = todaysAppointments.length;
+
+            // Get the number of upcoming appointments
+            var numberOfUpcomingAppointments = existingAppointments.length - numberOfTodaysAppointments - passedAppointments.length;
+
+            // Get the number of passed appointments
+            var numberOfPassedAppointments = passedAppointments.length;
+
+            // Get the total number of appointments
+            var numberOfAppointments = existingAppointments.length;
+
+            // Update the stats in the HTML
+            todaysAppointmentsElement.textContent = numberOfTodaysAppointments;
+            upcomingAppointmentsElement.textContent = numberOfUpcomingAppointments;
+            passedAppointmentsElement.textContent = numberOfPassedAppointments;
+            totalAppointmentsElement.textContent = numberOfAppointments;
+			
+
+            // Additional logic: Update the style based on the count (you can customize this part)
+            if (numberOfAppointments > 10) {
+                totalAppointmentsStatElement.style.backgroundColor = "#dc3545";  // Red color for high count
+            }else if (numberOfAppointments >= 5) {
+                totalAppointmentsStatElement.style.backgroundColor = "#dbc7b2";  // Red color for high count
+            }else if (numberOfAppointments > 3) {
+                totalAppointmentsStatElement.style.backgroundColor = "#b2b2db";  // Red color for high count
+            }else {
+                totalAppointmentsStatElement.style.backgroundColor = "#007bff";  // Default color
+            }
+			//for count number Of Today's Appointments
+			if (numberOfTodaysAppointments > 10) {
+                todaysAppointmentsStatElement.style.backgroundColor = "#dc3545";  // Red color for high count
+            }else if (numberOfTodaysAppointments > 5) {
+                todaysAppointmentsStatElement.style.backgroundColor = "#dbc7b2";  // Red color for high count
+            }else if (numberOfTodaysAppointments > 0) {
+                todaysAppointmentsStatElement.style.backgroundColor = "#b2b2db";  // Red color for high count
+            }else {
+                todaysAppointmentsStatElement.style.backgroundColor = "#007bff";  // Default color
+            }
+			//for count number Of upcoming appointments
+			if (numberOfUpcomingAppointments > 10) {
+                upcomingAppointmentsStatElement.style.backgroundColor = "#dc3545";  // Red color for high count
+            }else if (numberOfUpcomingAppointments > 5) {
+                upcomingAppointmentsStatElement.style.backgroundColor = "#dbc7b2";  // Red color for high count
+            }else if (numberOfUpcomingAppointments > 0) {
+                upcomingAppointmentsStatElement.style.backgroundColor = "#b2b2db";  // Red color for high count
+            }else {
+                upcomingAppointmentsStatElement.style.backgroundColor = "#007bff";  // Default color
+            }
+			//for count number Of Today's Appointments
+			if (numberOfPassedAppointments > 10) {
+                passedAppointmentsStatElement.style.backgroundColor = "#dc3545";  // Red color for high count
+            }else if (numberOfPassedAppointments > 5) {
+                passedAppointmentsStatElement.style.backgroundColor = "#dbc7b2";  // Red color for high count
+            }else if (numberOfPassedAppointments > 0) {
+                passedAppointmentsStatElement.style.backgroundColor = "#b2b2db";  // Red color for high count
+            }else {
+                passedAppointmentsStatElement.style.backgroundColor = "#007bff";  // Default color
+            }
+			
+        }
+
+        function displayAppointments() {
+            var appointmentsList = document.getElementById("appointmentsList");
+            var existingAppointments = JSON.parse(localStorage.getItem("appointments")) || [];
+			 updateAppointmentStats();
+            // Clear the current list
+            appointmentsList.innerHTML = "";
+			
+			var username = localStorage.getItem("username");
+			
+			if(username ==="trishia")
+			{
+				username="Trishia Maluleka";
+			} else if(username ==="kutlego")
+			{
+				username="Katlego Tebele";
+			}
+			 else if(username ==="phasha")
+			{
+				username="Phasha Kutloano";
+			}
+			 else if(username ==="admire")
+			{
+				username="Admire Mkansi";
+			}
+		
+
+
+            // Populate the table with appointments
+            existingAppointments.forEach(function (appointment, index) {
+			 if (appointment.doctor1 === username) {
+                var row = appointmentsList.insertRow();
+                var cellName = row.insertCell(0);
+                var cellEmail = row.insertCell(1);
+                var cellPhone = row.insertCell(2);
+                var cellDate = row.insertCell(3);
+                var cellTime = row.insertCell(4);
+                var cellDepartment = row.insertCell(5);
+                var cellDoctor = row.insertCell(6);
+                var cellActions = row.insertCell(7);
+
+                cellName.textContent = appointment.name;
+                cellEmail.textContent = appointment.email;
+                cellPhone.textContent = appointment.phone;
+                cellDate.textContent = appointment.date;
+                cellTime.textContent = appointment.time;
+                cellDepartment.textContent = appointment.department;
+                cellDoctor.textContent = appointment.doctor1;
+
+                // Add "View Details" button
+                var viewDetailsButton = document.createElement("button");
+                viewDetailsButton.textContent = "View Details";
+                viewDetailsButton.onclick = function() {
+                    viewDetails(appointment);
+                };
+                cellActions.appendChild(viewDetailsButton);
+
+                // Add "Delete" button
+				
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+				deleteButton.className = "delete";
+                deleteButton.onclick = function() {
+                    deleteAppointment(index);
+                };
+                cellActions.appendChild(deleteButton);
+				
+            }});
+        }
+		function displayAllAppointments() {
+            var appointmentsList = document.getElementById("appointmentsList");
+            var existingAppointments = JSON.parse(localStorage.getItem("appointments")) || [];
+			 updateAppointmentStats();
+            // Clear the current list
+            appointmentsList.innerHTML = "";
+			
+			
+			var username = localStorage.getItem("username");
+			
+			if(username ==="trishia")
+			{
+				username="Trishia Maluleka";
+			} else if(username ==="kutlego")
+			{
+				username="Katlego Tebele";
+			}
+			 else if(username ==="phasha")
+			{
+				username="Phasha Kutloano";
+			}
+			 else if(username ==="admire")
+			{
+				username="Admire Mkansi";
+			}
+            // Populate the table with appointments
+            existingAppointments.forEach(function (appointment, index) {
+			
+                var row = appointmentsList.insertRow();
+                var cellName = row.insertCell(0);
+                var cellEmail = row.insertCell(1);
+                var cellPhone = row.insertCell(2);
+                var cellDate = row.insertCell(3);
+                var cellTime = row.insertCell(4);
+                var cellDepartment = row.insertCell(5);
+                var cellDoctor = row.insertCell(6);
+                var cellActions = row.insertCell(7);
+
+                cellName.textContent = appointment.name;
+                cellEmail.textContent = appointment.email;
+                cellPhone.textContent = appointment.phone;
+                cellDate.textContent = appointment.date;
+                cellTime.textContent = appointment.time;
+                cellDepartment.textContent = appointment.department;
+                cellDoctor.textContent = appointment.doctor1;
+
+                // Add "View Details" button
+                var viewDetailsButton = document.createElement("button");
+                viewDetailsButton.textContent = "View Details";
+                viewDetailsButton.onclick = function() {
+                    viewDetails(appointment);
+                };
+                cellActions.appendChild(viewDetailsButton);
+
+                // Add "Delete" button
+				
+                var deleteButton = document.createElement("button");
+               if(appointment.doctor1 === username)
+				{
+			   deleteButton.textContent = "Delete";
+				deleteButton.className = "delete";
+                deleteButton.onclick = function() {
+                    deleteAppointment(index);
+                };
+				
+                cellActions.appendChild(deleteButton);
+				}
+            });
+        }
+
+        function viewDetails(appointment) {
+            // Modify this to show the full details in your preferred way
+            alert(
+                `Full Details:\n\n` +
+                `Name: ${appointment.name}\n` +
+                `Email: ${appointment.email}\n` +
+                `Phone: ${appointment.phone}\n` +
+                `Date: ${appointment.date}\n` +
+                `Time: ${appointment.time}\n` +
+                `Department: ${appointment.department}\n` +
+                `Doctor: ${appointment.doctor1}\n`+
+				`Message: ${appointment.message}`
+            );
+        }
+
+        function deleteAppointment(index) {
+            var existingAppointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+            // Remove the appointment at the specified index
+            existingAppointments.splice(index, 1);
+
+            // Save the updated list of appointments back to local storage
+            localStorage.setItem("appointments", JSON.stringify(existingAppointments));
+
+            // Refresh the list of appointments on the page
+            displayAppointments();
+        }
+
+        // Display appointments on page load
+        displayAppointments();
+    </script>
+</body>
+</html>

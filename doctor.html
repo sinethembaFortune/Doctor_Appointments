@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Page</title>
+	 <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+</head>
+<body>
+
+    <h1>Doctor's Page</h1>
+
+    <h2>Appointments</h2>
+    <ul id="doctorAppointmentsList"></ul>
+
+    <script>
+        function displayDoctorAppointments() {
+            var doctorAppointmentsList = document.getElementById("doctorAppointmentsList");
+
+            // Retrieve appointments from the query parameter
+            var urlParams = new URLSearchParams(window.location.search);
+            var appointmentsParam = urlParams.get("appointments");
+            var existingAppointments = JSON.parse(decodeURIComponent(appointmentsParam)) || [];
+
+            // Clear the current list
+            doctorAppointmentsList.innerHTML = "";
+
+            // Populate the list with appointments
+            existingAppointments.forEach(function (appointment) {
+                var listItem = document.createElement("li");
+                listItem.textContent = `${appointment.name} - ${appointment.date} at ${appointment.time}`;
+                doctorAppointmentsList.appendChild(listItem);
+            });
+        }
+
+        // Display doctor's appointments on page load
+        displayDoctorAppointments();
+    </script>
+
+</body>
+</html>

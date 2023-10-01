@@ -969,27 +969,16 @@
 		alert(popup);
 		window.location.href = "index.html";
 	}
-    
   }
-  
   function feedback() {
 	 var name = document.getElementById("name2").value;
     var email = document.getElementById("email2").value;
     var phone = document.getElementById("subject2").value;
     var message = document.getElementById("message2").value;
 	var success = "Your message has been sent. Thank you "+name+" with email :"+email+"!, Our Sky fam team(developers of Digital appointments) is very happy to recieve your feedback. Thank you!";
-	/*const fs = require('fs')
-	fs.writeFile('f.txt',success,(err) => {
-	if(err) throw err;
-	else{
-		console.log('The file')
-	}
-	})*/
 	alert(success);
-	
+	window.location.href = "index.html";
 	}
   </script>
-
 </body>
-
 </html>

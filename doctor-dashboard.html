@@ -186,10 +186,16 @@
         function logout() {
             // Replace this with actual logout logic, such as clearing session or redirecting to the logout page
             alert("Logout successful!");
+			localStorage.setItem("username", "");
             window.location.href = "doctor-login.html";
         }
 		  function updateAppointmentStats() {
-			var username = localStorage.getItem("username");
+		  var username = localStorage.getItem("username");
+		  if(username===""){
+			  alert("Please Login so you can Access this page");
+			  window.location.href = "doctor-login.html";
+		  }else{
+			
 			var specialty ="";
 			var doctorProfilePicUrl = "";
 			
@@ -320,7 +326,7 @@
                 passedAppointmentsStatElement.style.backgroundColor = "#007bff";  // Default color
             }
 			
-        }
+        }}
 
         function displayAppointments() {
             var appointmentsList = document.getElementById("appointmentsList");
